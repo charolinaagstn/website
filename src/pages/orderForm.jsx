@@ -2,6 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import emailjs from "emailjs-com";
 
+// ✅ Config EmailJS (BIARKAN INI - nanti kamu yang isi)
+const SERVICE_ID = "seven-company"; // Ganti jika perlu
+const TEMPLATE_ID = "template_7gt34p8"; // Ganti jika perlu
+const PUBLIC_KEY = "0R7sDdn02-pMuex6W"; // Ganti jika perlu
+
 const OrderForm = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -15,11 +20,12 @@ const OrderForm = () => {
     pesan: "",
   });
 
+  // ✅ Set tema & harga dari URL
   useEffect(() => {
     setFormData((prev) => ({
       ...prev,
       tema: searchParams.get("tema") || "",
-      harga: searchParams.get("harga") || ""
+      harga: searchParams.get("harga") || "",
     }));
   }, [searchParams]);
 
@@ -31,20 +37,27 @@ const OrderForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // ✅ Buat payload sesuai template EmailJS
+    const payload = {
+      name: formData.name,
+      email: formData.email,
+      whatsapp: formData.phone,
+      tema: formData.tema,
+      harga: formData.harga,
+      catatan: formData.pesan || "Tidak ada catatan",
+      time: new Date().toLocaleString("id-ID"), // contoh waktu
+      qris: "https://dummyimage.com/300x300/000/fff&text=QRIS+Dummy", // Dummy QRIS
+    };
+
     emailjs
-      .send(
-        "seven-company", // Service ID
-        "template_7gt34p8", // Template ID
-        formData,
-        "0R7sDdn02-pMuex6X" // Public Key (User ID)
-      )
+      .send(SERVICE_ID, TEMPLATE_ID, payload, PUBLIC_KEY)
       .then(
         () => {
           navigate("/success");
         },
         (error) => {
           alert("Gagal mengirim email. Coba lagi.");
-          console.error(error);
+          console.error("EmailJS Error:", error);
         }
       );
   };
@@ -64,6 +77,7 @@ const OrderForm = () => {
           onChange={handleChange}
           required
         />
+
         <input
           type="email"
           name="email"
@@ -73,6 +87,7 @@ const OrderForm = () => {
           onChange={handleChange}
           required
         />
+
         <input
           type="text"
           name="phone"
@@ -82,6 +97,7 @@ const OrderForm = () => {
           onChange={handleChange}
           required
         />
+
         <input
           type="text"
           name="tema"
@@ -89,6 +105,7 @@ const OrderForm = () => {
           className="w-full p-3 border bg-gray-100 rounded-lg"
           value={formData.tema}
         />
+
         <input
           type="text"
           name="harga"
@@ -96,6 +113,7 @@ const OrderForm = () => {
           className="w-full p-3 border bg-gray-100 rounded-lg"
           value={formData.harga}
         />
+
         <textarea
           name="pesan"
           placeholder="Catatan tambahan (opsional)"
@@ -103,6 +121,7 @@ const OrderForm = () => {
           onChange={handleChange}
           value={formData.pesan}
         ></textarea>
+
         <button
           type="submit"
           className="w-full py-3 bg-sky-600 text-white rounded-xl hover:bg-sky-700 transition"
