@@ -8,7 +8,7 @@ const Layout = () => {
     <div
       className="min-h-screen flex flex-col font-[Poppins] bg-cover bg-center bg-no-repeat"
       style={{
-        backgroundImage: "url('/bg-flowers2.jpg')",
+        backgroundImage: "url('/bgk.jpg')",
       }}
     >
       {/* Overlay agar teks tetap terbaca */}
