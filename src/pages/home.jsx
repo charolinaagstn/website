@@ -26,50 +26,57 @@ const Home = () => {
             transition={{ duration: 0.6 }}
             className="lg:col-span-7"
           >
-            <div className="max-w-2xl">
-              <p className="inline-block text-xs uppercase tracking-wide text-sky-600 bg-sky-50 px-3 py-1 rounded-full">
-                Creative Studio • Undangan Digital
-              </p>
+           <div className="max-w-2xl">
+  {/* Tagline */}
+  <p className="inline-block text-xs uppercase tracking-wide text-sky-700 bg-sky-50 px-4 py-1.5 rounded-full font-medium shadow-sm">
+    Seven Company • Undangan Digital Eksklusif
+  </p>
 
-              <h1 className="mt-6 text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight">
-                Undangan Digital yang <span className="text-sky-600">Hangat</span> & Mudah
-              </h1>
+  {/* Headline */}
+  <h1 className="mt-6 text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight text-slate-900">
+    Buat Momen <span className="text-sky-600">Berharga</span> Jadi
+    <br className="hidden sm:block" /> Undangan Digital yang Tak Terlupakan
+  </h1>
 
-              <p className="mt-4 text-gray-600 text-base">
-                Kami tim kecil yang berdedikasi membantu kamu membuat undangan digital
-                personal dan mudah dibagikan. Cocok untuk pernikahan, syukuran, atau
-                acara keluarga — sederhana, cepat, dan elegan.
-              </p>
+  {/* Subheadline */}
+  <p className="mt-4 text-gray-600 text-base leading-relaxed">
+    Kami merancang undangan digital dengan desain elegan, sentuhan personal,
+    dan pengalaman interaktif — sempurna untuk pernikahan, ulang tahun,
+    hingga acara istimewa lainnya. Semua bisa dibuat cepat, mudah, dan penuh kesan.
+  </p>
 
-              <div className="mt-6 flex flex-wrap gap-3">
-                <a
-                  href="/demo"
-                  className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-sky-600 text-white font-semibold shadow-md hover:brightness-95 transition"
-                >
-                  <Calendar className="w-4 h-4" />
-                  Lihat Demo
-                </a>
+  {/* CTA Buttons */}
+  <div className="mt-6 flex flex-wrap gap-3">
+    <a
+      href="/demo"
+      className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-sky-600 to-sky-500 text-white font-semibold shadow-md hover:shadow-lg hover:scale-105 transition-transform duration-300"
+    >
+      <Calendar className="w-4 h-4" />
+      Lihat Demo
+    </a>
 
-                <a
-                  href="#contact"
-                  className="inline-flex items-center gap-2 px-5 py-3 rounded-full border border-sky-200 bg-white text-sky-600 font-medium shadow-sm hover:shadow-md transition"
-                >
-                  <MessageCircle className="w-4 h-4" />
-                  Konsultasi Gratis
-                </a>
-              </div>
+    <a
+      href="#contact"
+      className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-sky-200 bg-white text-sky-600 font-semibold shadow-sm hover:bg-sky-50 hover:shadow-md transition-all duration-300"
+    >
+      <MessageCircle className="w-4 h-4" />
+      Konsultasi Gratis
+    </a>
+  </div>
 
-              <div className="mt-6 flex flex-col sm:flex-row sm:items-center gap-3 text-sm text-gray-500">
-                <div className="flex items-center gap-2">
-                  <Calendar className="w-4 h-4 opacity-70" />
-                  <span>Proses sederhana — mulai dari briefing hingga live</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <MapPin className="w-4 h-4 opacity-70" />
-                  <span>Fokus pada kualitas & pengalaman tamu</span>
-                </div>
-              </div>
-            </div>
+  {/* Highlights */}
+  <div className="mt-8 flex flex-col sm:flex-row sm:items-center gap-4 text-sm text-gray-500">
+    <div className="flex items-center gap-2">
+      <Calendar className="w-4 h-4 text-sky-500 opacity-80" />
+      <span>Proses cepat & transparan — dari desain hingga siap dibagikan</span>
+    </div>
+    <div className="flex items-center gap-2">
+      <MapPin className="w-4 h-4 text-sky-500 opacity-80" />
+      <span>Desain responsif & nyaman dilihat di semua perangkat</span>
+    </div>
+  </div>
+</div>
+
           </motion.div>
 
           {/* Preview Card / Visual */}
@@ -89,7 +96,7 @@ const Home = () => {
                 <div className="mt-3 rounded-lg overflow-hidden border border-slate-100">
                   <div className="relative w-full aspect-video"> {/* Menjaga keseimbangan rasio gambar */}
                     <img
-                      src="/citra.png"
+                      src="/undngn.jpg"
                       alt="Preview"
                       className="w-full h-full object-cover"
                     />
@@ -124,63 +131,94 @@ const Home = () => {
 
       {/* SIMPLE FEATURE ROW (value statements) */}
       <section className="max-w-5xl mx-auto px-6 py-6">
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <motion.div
-            initial={{ opacity: 0, y: 6 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.05 }}
-            className="bg-white rounded-xl p-4 text-center border border-slate-100 shadow-sm"
-          >
-            <div className="text-sm font-semibold text-sky-600">Personalisasi</div>
-            <div className="mt-2 text-sm text-gray-600">Tema, musik, teks — sesuai selera.</div>
-          </motion.div>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-4">
+  <motion.div
+    initial={{ opacity: 0, y: 10 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.6, delay: 0.05 }}
+    className="bg-gradient-to-br from-sky-50 to-white rounded-2xl p-6 text-center border border-slate-100 shadow-md hover:shadow-lg transition-all duration-300"
+  >
+    <div className="text-lg font-semibold text-sky-700">Desain Eksklusif</div>
+    <div className="mt-2 text-sm text-gray-600">
+      Setiap undangan dibuat dengan sentuhan desain yang elegan dan personal — mencerminkan cerita spesial Anda.
+    </div>
+  </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 6 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="bg-white rounded-xl p-4 text-center border border-slate-100 shadow-sm"
-          >
-            <div className="text-sm font-semibold text-sky-600">Proses Jelas</div>
-            <div className="mt-2 text-sm text-gray-600">Langkah terstruktur dari briefing hingga live.</div>
-          </motion.div>
+  <motion.div
+    initial={{ opacity: 0, y: 10 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.6, delay: 0.1 }}
+    className="bg-gradient-to-br from-rose-50 to-white rounded-2xl p-6 text-center border border-slate-100 shadow-md hover:shadow-lg transition-all duration-300"
+  >
+    <div className="text-lg font-semibold text-rose-600">Fitur Interaktif</div>
+    <div className="mt-2 text-sm text-gray-600">
+      Tambahkan galeri foto, peta lokasi, hingga hitung mundur acara — buat undangan lebih hidup!
+    </div>
+  </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 6 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.15 }}
-            className="bg-white rounded-xl p-4 text-center border border-slate-100 shadow-sm"
-          >
-            <div className="text-sm font-semibold text-sky-600">Support</div>
-            <div className="mt-2 text-sm text-gray-600">Kami bantu setup QR/Share & small-troubleshooting.</div>
-          </motion.div>
-        </div>
+  <motion.div
+    initial={{ opacity: 0, y: 10 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.6, delay: 0.15 }}
+    className="bg-gradient-to-br from-emerald-50 to-white rounded-2xl p-6 text-center border border-slate-100 shadow-md hover:shadow-lg transition-all duration-300"
+  >
+    <div className="text-lg font-semibold text-emerald-600">Proses Cepat & Support Penuh</div>
+    <div className="mt-2 text-sm text-gray-600">
+      Kami bantu dari awal hingga undangan siap dibagikan — respon cepat dan pelayanan ramah.
+    </div>
+  </motion.div>
+</div>
+
       </section>
 
       {/* PACKAGES (placeholder) */}
       <section className="max-w-6xl mx-auto px-6 py-8">
-        <div className="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm">
-          <h2 className="text-lg font-semibold text-slate-900">Paket & Harga (contoh)</h2>
-          <p className="text-sm text-gray-600 mt-2">
-            Kami bisa siapkan paket sederhana sesuai kebutuhan. Detail harga akan kami
-            diskusikan saat konsultasi.
-          </p>
+        <div className="bg-white/70 backdrop-blur-lg rounded-3xl p-8 border border-slate-100 shadow-md">
+  <h2 className="text-2xl font-bold text-sky-800 text-center mb-2">Paket & Harga Undangan Digital</h2>
+  <p className="text-sm text-gray-600 text-center max-w-xl mx-auto">
+    Pilih paket yang sesuai dengan kebutuhan dan gaya acaramu — dari versi simpel hingga tampilan eksklusif lengkap
+    dengan fitur interaktif.
+  </p>
 
-          <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div className="p-4 rounded-lg border border-slate-100 bg-slate-50 text-center">
-              <div className="font-semibold">Starter</div>
-              <div className="mt-2 text-sm text-gray-600">Template dasar • Share link</div>
-            </div>
-            <div className="p-4 rounded-lg border border-slate-100 bg-white text-center shadow">
-              <div className="font-semibold">Kustom</div>
-              <div className="mt-2 text-sm text-gray-600">Personalisasi layout & musik</div>
-            </div>
-            <div className="p-4 rounded-lg border border-slate-100 bg-slate-50 text-center">
-              <div className="font-semibold">Full Service</div>
-              <div className="mt-2 text-sm text-gray-600">Setup domain & QR, support</div>
-            </div>
-          </div>
-        </div>
+  <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-6">
+    {/* Paket 1 */}
+    <div className="p-6 rounded-2xl border border-slate-100 bg-sky-50/40 text-center hover:shadow-lg transition">
+      <div className="text-lg font-semibold text-sky-800">Basic</div>
+      <div className="mt-2 text-sm text-gray-600 leading-relaxed">
+        Tema standar pilihanmu <br /> + Link undangan siap kirim
+      </div>
+      <div className="mt-3 font-semibold text-sky-700">Rp 15.000</div>
+    </div>
+
+    {/* Paket 2 */}
+    <div className="p-6 rounded-2xl border border-sky-200 bg-gradient-to-b from-white to-sky-50 text-center shadow-lg">
+      <div className="text-lg font-semibold text-sky-800">Premium</div>
+      <div className="mt-2 text-sm text-gray-600 leading-relaxed">
+        Desain lebih elegan <br /> + galeri foto & lokasi acara
+      </div>
+      <div className="mt-3 font-semibold text-sky-700">Rp 25.000</div>
+      <div className="mt-3">
+        <span className="inline-block bg-sky-600 text-white text-xs px-3 py-1 rounded-full">
+          Favorit!
+        </span>
+      </div>
+    </div>
+
+    {/* Paket 3 */}
+    <div className="p-6 rounded-2xl border border-slate-100 bg-sky-50/40 text-center hover:shadow-lg transition">
+      <div className="text-lg font-semibold text-sky-800">Exclusive</div>
+      <div className="mt-2 text-sm text-gray-600 leading-relaxed">
+        Desain full custom + domain pribadi <br /> + QR code & dukungan penuh
+      </div>
+      <div className="mt-3 font-semibold text-sky-700">Rp 30.000</div>
+    </div>
+  </div>
+
+  <p className="mt-6 text-center text-xs text-gray-500">
+    *Harga dapat menyesuaikan tema & permintaan khusus.
+  </p>
+</div>
+
       </section>
 
       {/* CONTACT / FOOTER CTA */}

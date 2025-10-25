@@ -2,16 +2,16 @@ import React from "react";
 import { motion } from "framer-motion";
 
 const members = [
-  { role: "Komisaris Utama", name: "CHAROLINA AGUSTIN", photo: "/charolin.jpg" },
   { role: "CEO", name: "ANGELICA AULIA SANDI", photo: "/angel.jpg" },
-  { role: "Direktur Keuangan", name: "ARIYA LITA", photo: "/lita.jpg" },
+  { role: "Komisaris Utama", name: "CHAROLINA AGUSTIN", photo: "/oyin.jpg" },
   { role: "Direktur Pemasaran", name: "SUNDARI WELAS ASIH", photo: "/cun.jpg" },
-  { role: "Direktur Kebijakan", name: "SITI MAHLIANI PUTRI SIREGAR", photo: "/siti.jpg" },
-  { role: "Direktur Sistem Operasi", name: "MEISYA ANDELA FITRA", photo: "/meisya.jpg" },
+  { role: "Direktur Keuangan", name: "ARIYA LITA", photo: "/lita.jpg" },
   { role: "Direktur Pengembangan Teknologi", name: "YESA DAMAYANTI", photo: "/yesa.jpg" },
+  { role: "Direktur Kebijakan", name: "SITI MAHLIANI PUTRI SIREGAR", photo: "/siti.jpg" },
+  { role: "Direktur Sistem Operasional", name: "MEISYA ANDELA FITRA", photo: "/meisya.jpg" },
 ];
 
-const gridLayout = [[0], [1], [2, 3], [4, 5], [6]];
+const gridLayout = [[0,1], [2,3], [4, 5], [6]];
 
 const Organization = () => {
   return (
@@ -50,7 +50,7 @@ const Organization = () => {
                   />
                 </div>
                 <p className="font-semibold text-sky-900">{members[index].role}</p>
-                <p className="text-gray-600 text-sm italic mt-1">({members[index].name})</p>
+                <p className="text-gray-600 text-sm italic mt-1">{members[index].name}</p>
               </motion.div>
             ))}
           </div>

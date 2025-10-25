@@ -4,22 +4,76 @@ import { useNavigate } from "react-router-dom";
 
 const themes = [
   {
-    title: "Pelaminan",
-    desc: "Nuansa ivory & gold berpadu dengan layout klasik — menciptakan kesan anggun yang abadi.",
-    background: "/married.jpg",
-    price: "Rp 150.000",
+    title: "Elegant Wedding",
+    desc: "Sentuhan bunga putih, nuansa gold lembut, dan animasi elegan — sempurna untuk momen sakral penuh cinta.",
+    background: "/themes/elegant.png",
+    price: "Rp 25.000",
   },
   {
-    title: "Ulang Tahun",
-    desc: "Vibes ceria dan penuh energi, cocok untuk pesta ulang tahun, wisuda, atau momen penuh tawa.",
-    background: "/birthday.jpg",
-    price: "Rp 120.000",
+    title: "Rustic Garden",
+    desc: "Tema alami dengan dedaunan hijau, kayu vintage, dan aksen bunga liar — cocok untuk pasangan yang menyukai nuansa alam.",
+    background: "/themes/rustic.png",
+    price: "Rp 28.000",
   },
   {
-    title: "Pernikahan",
-    desc: "Kombinasi geometris islami dan warna emerald yang menenangkan, menghadirkan kesan sakral & damai.",
-    background: "/wedding.jpg",
-    price: "Rp 200.000",
+    title: "Modern Minimalist",
+    desc: "Tampilan bersih dan stylish dengan font modern dan warna netral — cocok untuk kamu yang suka kesederhanaan elegan.",
+    background: "/themes/minimslist.png",
+    price: "Rp 22.000",
+  },
+  {
+    title: "Luxury Gold",
+    desc: "Desain premium bernuansa emas dan putih yang mewah, dilengkapi musik latar romantis untuk kesan istimewa.",
+    background: "/themes/luxury.png",
+    price: "Rp 29.000",
+  },
+  {
+    title: "Birthday Sparkle",
+    desc: "Warna cerah, balon, dan animasi confetti — menghadirkan suasana pesta ulang tahun yang meriah dan penuh semangat.",
+    background: "/themes/sparkle.png",
+    price: "Rp 20.000",
+  },
+  {
+    title: "Sweet 17 Party",
+    desc: "Desain girly dengan warna pastel dan efek kilau lembut — cocok untuk perayaan remaja yang unforgettable.",
+    background: "/themes/sweet17.png",
+    price: "Rp 23.000",
+  },
+  {
+    title: "Aqiqah & Syukuran",
+    desc: "Tema islami lembut dengan kaligrafi dan warna pastel — menyampaikan rasa syukur dan doa dengan hangat.",
+    background: "/themes/aqiqah.png",
+    price: "Rp 18.000",
+  },
+  {
+    title: "Wisuda Moments",
+    desc: "Kombinasi warna biru navy dan emas, cocok untuk momen kelulusan yang penuh kebanggaan dan prestasi.",
+    background: "/themes/wisuda.png",
+    price: "Rp 19.000",
+  },
+  {
+    title: "Engagement Bliss",
+    desc: "Tema romantis dengan warna blush dan ivory, cocok untuk acara lamaran yang hangat dan berkesan.",
+    background: "/themes/engagment.png",
+    price: "Rp 24.000",
+  },
+  {
+    title: "Anniversary Love",
+    desc: "Desain elegan dengan elemen foto pasangan, musik romantis, dan ucapan cinta yang bisa disesuaikan.",
+    background: "/themes/anniversary.png",
+    price: "Rp 26.000",
+  },
+  {
+    title: "Baby Shower",
+    desc: "Desain lucu dengan warna lembut biru muda atau pink pastel — cocok untuk menyambut buah hati tercinta.",
+    background: "/themes/babyshower.png",
+    price: "Rp 20.000",
+  },
+  {
+    title: "Open House Lebaran",
+    desc: "Nuansa hijau zamrud dengan ornamen islami modern, cocok untuk undangan halal bihalal atau acara keluarga besar.",
+    background: "/themes/lebaran.png",
+    price: "Rp 21.000",
   },
 ];
 
@@ -48,8 +102,7 @@ const Design = () => {
           Pilihan Desain Digital Premium
         </h2>
         <p className="mt-3 text-gray-600 max-w-2xl mx-auto">
-          Pilih gaya undangan yang mencerminkan kisahmu — klasik, ceria, atau sakral sesuai momen
-          spesial.
+          Pilih gaya undangan yang mencerminkan kisahmu — klasik, ceria, atau sakral sesuai momen spesial.
         </p>
       </motion.div>
 
@@ -76,6 +129,19 @@ const Design = () => {
 
               <div className="flex items-center justify-between gap-4">
                 <div className="text-lg font-semibold text-sky-800">{item.price}</div>
+              </div>
+
+              {/* BUTTONS SECTION */}
+              <div className="mt-4 flex items-center justify-between gap-3">
+                <motion.a
+                  href={item.background}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  whileHover={{ scale: 1.05 }}
+                  className="px-4 py-2 border border-sky-500 text-sky-600 rounded-full font-medium hover:bg-sky-50 transition"
+                >
+                  Lihat Desain
+                </motion.a>
 
                 <motion.button
                   whileHover={{ scale: 1.05 }}
