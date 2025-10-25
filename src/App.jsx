@@ -1,6 +1,5 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Layout from "./layout/layout";
 import Home from "./pages/Home";
 import Design from "./pages/Design";
 import Organization from "./pages/organization";
@@ -8,6 +7,7 @@ import Demo from "./pages/demo";
 import Contact from "./pages/contact";
 import OrderForm from "./pages/orderForm";
 import Success from "./pages/success";
+import Layout from "./layout/Layout";
 
 
 const App = () => {
