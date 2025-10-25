@@ -47,13 +47,7 @@ const Home = () => {
 
   {/* CTA Buttons */}
   <div className="mt-6 flex flex-wrap gap-3">
-    <a
-      href="/demo"
-      className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-sky-600 to-sky-500 text-white font-semibold shadow-md hover:shadow-lg hover:scale-105 transition-transform duration-300"
-    >
-      <Calendar className="w-4 h-4" />
-      Lihat Demo
-    </a>
+    
 
     <a
       href="#contact"
@@ -111,19 +105,14 @@ const Home = () => {
                   <div className="p-3 bg-white">
                     <div className="flex items-center justify-between text-sm text-gray-600">
                       <div>RSVP</div>
-                      <div className="text-sky-600 font-medium">Klik untuk detail</div>
+                      <div className="text-sky-600 font-medium">Contoh Undangan</div>
                     </div>
                   </div>
                 </div>
               </div>
 
               {/* floating CTA */}
-              <a
-                href="/demo"
-                className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 bg-sky-600 text-white px-4 py-2 rounded-full shadow-md text-sm font-medium hover:brightness-95 transition"
-              >
-                Lihat Demo Lengkap
-              </a>
+              
             </div>
           </motion.div>
         </div>
@@ -225,7 +214,7 @@ const Home = () => {
       <section id="contact" className="max-w-6xl mx-auto px-6 py-8">
         <div className="bg-sky-50 rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4 border border-sky-100">
           <div>
-            <div className="text-lg font-semibold text-sky-600">Butuh bantuan atau demo?</div>
+            <div className="text-lg font-semibold text-sky-600">Butuh bantuan ?</div>
             <div className="text-sm text-gray-600 mt-1">Hubungi kami untuk sesi singkat dan penjelasan paket.</div>
           </div>
 
@@ -238,13 +227,6 @@ const Home = () => {
               Telepon / WhatsApp
             </a>
 
-            <a
-              href="/demo"
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-sky-200 bg-white text-sky-600 font-medium"
-            >
-              <ImageIcon className="w-4 h-4" />
-              Minta Demo
-            </a>
           </div>
         </div>
       </section>

@@ -2,14 +2,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { MessageSquare, Phone, Mail, Clock } from "lucide-react";
 
-/**
- * Contact.jsx
- * - Form sederhana (Nama, Kontak, Pesan) -> sementara show alert saat submit
- * - Tombol WhatsApp langsung buka chat (example WA number placeholder)
- * - Info kontak / jam kerjaa
- */
-
-const WA_NUMBER = "+6282375328943"; // ganti dengan nomor WhatsAppmu (format internasional tanpa +)
+const WA_NUMBER = "6282375328943"; // format tanpa +, sudah benar
 
 const Contact = () => {
   const [form, setForm] = useState({ name: "", contact: "", message: "" });
@@ -23,7 +16,6 @@ const Contact = () => {
     e.preventDefault();
     setSubmitting(true);
 
-    // Simulasi submit — karena backend belum ada, tampilkan alert
     setTimeout(() => {
       alert(
         `Terima kasih, ${form.name || "User"}!\nPesan Anda telah terkirim (simulasi).\nKami akan menghubungi via: ${form.contact || "kontak tidak terisi"}`
@@ -39,10 +31,11 @@ const Contact = () => {
   }
 
   return (
-    <main className="min-h-screen py-12">
-      <section className="max-w-6xl mx-auto p-20 bg-white/40 backdrop-blur-lg rounded-4xl">
+    <main className="min-h-screen py-10 px-4 sm:px-6 ">
+      <section className="max-w-6xl mx-auto bg-white/60 backdrop-blur-xl rounded-3xl shadow-lg p-6 sm:p-10 md:p-12 lg:p-16">
+        {/* Header */}
         <motion.div
-          className="mb-8 text-center"
+          className="mb-10 text-center"
           initial={{ opacity: 0, y: 6 }}
           animate={{ opacity: 1, y: 0 }}
         >
@@ -50,23 +43,25 @@ const Contact = () => {
             Hubungi Kami
           </p>
 
-          <h1 className="mt-4 text-3xl sm:text-4xl font-extrabold">
-            Siap diskusi? Kami siap membantu <span className="text-sky-600">dengan hangat</span>
+          <h1 className="mt-4 text-2xl sm:text-3xl font-extrabold leading-tight">
+            Siap diskusi? Kami siap membantu{" "}
+            <span className="text-sky-600">dengan hangat</span>
           </h1>
 
-          <p className="mt-3 text-gray-600 max-w-2xl mx-auto">
+          <p className="mt-3 text-gray-600 max-w-2xl mx-auto text-sm sm:text-base">
             Isi formulir di bawah atau mulai chat langsung via WhatsApp untuk respon cepat.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+        {/* Konten grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Form */}
           <motion.form
             onSubmit={handleSubmit}
             initial={{ opacity: 0, x: -8 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
-            className="md:col-span-8 bg-white/70 backdrop-blur-lg rounded-2xl p-6 border border-slate-100 shadow"
+            className="lg:col-span-8 bg-white/80 backdrop-blur-lg rounded-2xl p-6 sm:p-8 border border-slate-100 shadow"
           >
             <label className="text-sm text-gray-700">Nama</label>
             <input
@@ -96,11 +91,11 @@ const Contact = () => {
               className="mt-2 mb-4 w-full rounded-md border border-slate-200 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-200"
             />
 
-            <div className="flex items-center gap-3">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:gap-3">
               <button
                 type="submit"
                 disabled={submitting}
-                className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-sky-600 text-white font-medium shadow hover:brightness-95 transition"
+                className="w-full sm:w-auto inline-flex justify-center items-center gap-2 px-5 py-2 rounded-full bg-sky-600 text-white font-medium shadow hover:brightness-95 transition"
               >
                 {submitting ? "Mengirim..." : "Kirim Pesan (simulasi)"}
               </button>
@@ -108,7 +103,7 @@ const Contact = () => {
               <button
                 type="button"
                 onClick={openWhatsApp}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-sky-200 bg-white text-sky-600 font-medium shadow-sm"
+                className="mt-3 sm:mt-0 w-full sm:w-auto inline-flex justify-center items-center gap-2 px-4 py-2 rounded-full border border-sky-200 bg-white text-sky-600 font-medium shadow-sm hover:bg-sky-50"
               >
                 <Phone className="w-4 h-4" />
                 Chat via WhatsApp
@@ -118,7 +113,7 @@ const Contact = () => {
 
           {/* Info sidebar */}
           <motion.aside
-            className="md:col-span-4 bg-white/70 backdrop-blur-lg rounded-2xl p-6 border border-slate-100 shadow"
+            className="lg:col-span-4 bg-white/80 backdrop-blur-lg rounded-2xl p-6 border border-slate-100 shadow"
             initial={{ opacity: 0, x: 8 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
@@ -131,26 +126,23 @@ const Contact = () => {
               </div>
             </div>
 
-            <div className="mt-4 text-sm text-gray-600">
+            <div className="mt-4 text-sm text-gray-600 space-y-3">
               <div className="flex items-center gap-2">
                 <Clock className="w-4 h-4" />
                 <span>Jam kerja: Senin–Jumat, 09:00–17:00</span>
               </div>
-
-              <div className="flex items-center gap-2 mt-3">
+              <div className="flex items-center gap-2">
                 <Mail className="w-4 h-4" />
                 <span>Email: hello@sevencompany.id</span>
               </div>
-
-              <div className="flex items-center gap-2 mt-3">
+              <div className="flex items-center gap-2">
                 <Phone className="w-4 h-4" />
                 <span>WhatsApp: +62 812-3456-7890</span>
               </div>
             </div>
 
             <div className="mt-6 text-sm text-gray-500">
-              <strong>Catatan:</strong> Saat ini form hanya simulasi — untuk pemesanan
-              dan demo live, silakan chat via WhatsApp untuk respon cepat.
+              <strong>Catatan:</strong> Saat ini form hanya simulasi — untuk pemesanan dan demo live, silakan chat via WhatsApp untuk respon cepat.
             </div>
           </motion.aside>
         </div>
