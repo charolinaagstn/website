@@ -2,16 +2,18 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { MessageSquare, Phone, Mail, Clock } from "lucide-react";
 
-const WA_NUMBER = "6282375328943"; // format tanpa +, sudah benar
+const WA_NUMBER = "6282375328943"; // ✅ Format tanpa tanda +
 
 const Contact = () => {
   const [form, setForm] = useState({ name: "", contact: "", message: "" });
   const [submitting, setSubmitting] = useState(false);
 
+  // 🔹 Handle input perubahan
   function handleChange(e) {
     setForm((s) => ({ ...s, [e.target.name]: e.target.value }));
   }
 
+  // 🔹 Simulasi pengiriman form
   function handleSubmit(e) {
     e.preventDefault();
     setSubmitting(true);
@@ -25,13 +27,38 @@ const Contact = () => {
     }, 700);
   }
 
+  // 🌸 WhatsApp Template Premium
   function openWhatsApp() {
-    const text = encodeURIComponent("Halo, saya mau konsultasi mengenai undangan digital.");
+    const { name, contact, message } = form;
+
+    const text = encodeURIComponent(
+      `🌸 *Halo Seven Company!* 🌸
+
+Saya tertarik dengan layanan *Digital Invitation* Anda. 
+Berikut beberapa detail awal saya:
+
+👤 *Nama:* ${name || "(belum diisi)"}
+📱 *Kontak:* ${contact || "(belum diisi)"}
+
+💬 *Pesan atau kebutuhan saya:* 
+${message || "Belum ada pesan."}
+
+✨ Saya ingin tahu lebih lanjut tentang:
+- 💌 Desain & fitur yang tersedia
+- 💰 Paket harga dan promo aktif
+- 🚀 Estimasi waktu pengerjaan
+
+🕒 *Dikirim pada:* ${new Date().toLocaleString("id-ID")}
+
+Terima kasih sudah meluangkan waktu membaca pesan saya 💖  
+Semoga harimu menyenangkan! 🌷`
+    );
+
     window.open(`https://wa.me/${WA_NUMBER}?text=${text}`, "_blank");
   }
 
   return (
-    <main className="min-h-screen py-10 px-4 sm:px-6 ">
+    <main className="min-h-screen py-10 px-4 sm:px-6">
       <section className="max-w-6xl mx-auto bg-white/60 backdrop-blur-xl rounded-3xl shadow-lg p-6 sm:p-10 md:p-12 lg:p-16">
         {/* Header */}
         <motion.div
@@ -45,15 +72,15 @@ const Contact = () => {
 
           <h1 className="mt-4 text-2xl sm:text-3xl font-extrabold leading-tight">
             Siap diskusi? Kami siap membantu{" "}
-            <span className="text-sky-600">dengan hangat</span>
+            <span className="text-sky-600">dengan hangat 💬</span>
           </h1>
 
           <p className="mt-3 text-gray-600 max-w-2xl mx-auto text-sm sm:text-base">
-            Isi formulir di bawah atau mulai chat langsung via WhatsApp untuk respon cepat.
+            Isi formulir di bawah atau mulai chat langsung via WhatsApp untuk respon cepat dan ramah.
           </p>
         </motion.div>
 
-        {/* Konten grid */}
+        {/* Grid Konten */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Form */}
           <motion.form
@@ -111,7 +138,7 @@ const Contact = () => {
             </div>
           </motion.form>
 
-          {/* Info sidebar */}
+          {/* Sidebar Info */}
           <motion.aside
             className="lg:col-span-4 bg-white/80 backdrop-blur-lg rounded-2xl p-6 border border-slate-100 shadow"
             initial={{ opacity: 0, x: 8 }}
@@ -137,12 +164,12 @@ const Contact = () => {
               </div>
               <div className="flex items-center gap-2">
                 <Phone className="w-4 h-4" />
-                <span>WhatsApp: +62 812-3456-7890</span>
+                <span>WhatsApp: +62 823-7532-8943</span>
               </div>
             </div>
 
             <div className="mt-6 text-sm text-gray-500">
-              <strong>Catatan:</strong> Saat ini form hanya simulasi — untuk pemesanan dan demo live, silakan chat via WhatsApp untuk respon cepat.
+              <strong>Catatan:</strong> Saat ini form hanya simulasi — untuk pemesanan dan demo live, silakan chat via WhatsApp agar tim kami dapat merespons lebih cepat 💙
             </div>
           </motion.aside>
         </div>
