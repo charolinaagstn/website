@@ -86,9 +86,37 @@ const Design = () => {
     navigate(`/order?tema=${tema}&harga=${harga}`);
   };
 
+  const handleCustomDesign = () => {
+    navigate("/desain-custom");
+  };
+
   return (
     <section className="text-center bg-white/40 backdrop-blur-lg p-10 rounded-4xl">
       {/* Header Section */}
+        <div className="mx-auto mb-15">
+         {/* 🔹 CUSTOM DESIGN CARD */}
+        <motion.div
+          whileHover={{ scale: 1.03 }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="flex flex-col items-center justify-center bg-white/50 backdrop-blur-xl rounded-3xl p-8 shadow-inner"
+        >
+          <h3 className="text-2xl font-semibold text-sky-900 mb-3">
+            Punya Desain Sendiri?
+          </h3>
+          <p className="text-gray-600 mb-6 max-w-xs">
+            Kamu bisa mengunggah desain custom buatanmu sendiri — biar undanganmu benar-benar unik dan personal!
+          </p>
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            onClick={handleCustomDesign}
+            className="px-5 py-3 bg-gradient-to-r from-sky-500 to-blue-600 text-white rounded-full shadow-md font-medium hover:cursor-pointer"
+          >
+            Buat Desain Custom
+          </motion.button>
+        </motion.div>
+      </div>
       <motion.div
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
@@ -117,12 +145,10 @@ const Design = () => {
             transition={{ duration: 0.5, delay: i * 0.15 }}
             className="bg-white/70 backdrop-blur-xl rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-white/50"
           >
-            {/* FIXED IMAGE SIZE */}
             <div className="h-40 w-full">
               <img src={item.background} alt={item.title} className="w-full h-full object-cover" />
             </div>
 
-            {/* Content */}
             <div className="p-6">
               <h3 className="text-xl font-semibold text-sky-900 mb-2">{item.title}</h3>
               <p className="text-gray-600 text-sm leading-relaxed mb-4">{item.desc}</p>
@@ -131,7 +157,6 @@ const Design = () => {
                 <div className="text-lg font-semibold text-sky-800">{item.price}</div>
               </div>
 
-              {/* BUTTONS SECTION */}
               <div className="mt-4 flex items-center justify-between gap-3">
                 <motion.a
                   href={item.background}
@@ -146,7 +171,7 @@ const Design = () => {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   onClick={() => handleOrder(item.title, item.price)}
-                  className="px-4 py-2 bg-gradient-to-r from-sky-500 to-blue-600 text-white rounded-full shadow-md font-medium transition"
+                  className="px-4 py-2 bg-gradient-to-r from-sky-500 to-blue-600 text-white rounded-full shadow-md font-medium transition hover:cursor-pointer"
                   aria-label={`Pesan ${item.title}`}
                 >
                   Pesan Sekarang
