@@ -58,7 +58,7 @@ const OrderForm = () => {
       console.log("✅ Email status pending dikirim");
 
       // 💳 Buat transaksi Midtrans
-      const res = await fetch("http://localhost:5000/api/create-transaction", {
+      const res = await fetch("https://invity-digital-invitation.vercel.app/api/create-transaction", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
