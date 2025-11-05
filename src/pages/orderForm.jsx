@@ -35,7 +35,7 @@ const OrderForm = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handlePayment = async (e) => {
+ const handlePayment = async (e) => {
   e.preventDefault();
   setLoading(true);
 
@@ -53,11 +53,11 @@ const OrderForm = () => {
   };
 
   try {
-    // ✅ 1. Kirim email pending
+    // Kirim email status pending
     await emailjs.send(SERVICE_ID, TEMPLATE_ID, emailPayload, PUBLIC_KEY);
     console.log("✅ Email status pending dikirim");
 
-    // ✅ 2. Buat transaksi Midtrans
+    // Buat transaksi Midtrans
     const res = await fetch("/api/create-transaction", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -71,59 +71,7 @@ const OrderForm = () => {
     const data = await res.json();
     if (!data.token) throw new Error("Gagal mendapatkan token Midtrans.");
 
-    // ✅ 3. Coba buka popup pembayaran
-    let paymentWindow = null;
-    if (typeof window !== "undefined") {
-      paymentWindow = window.open("", "_blank", "width=450,height=600,noopener,noreferrer");
-    }
-
-    if (!paymentWindow || paymentWindow.closed || typeof paymentWindow.closed === "undefined") {
-      alert("Popup pembayaran diblokir oleh browser. Mohon izinkan popup dan coba lagi.");
-      setLoading(false);
-      return;
-    }
-
-    // ✅ 4. Tulis halaman loading dengan aman
-    paymentWindow.document.open();
-    paymentWindow.document.write(`
-      <html>
-        <head>
-          <title>Pembayaran Sedang Diproses</title>
-          <style>
-            body {
-              margin: 0;
-              height: 100vh;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              flex-direction: column;
-              background: linear-gradient(135deg, #e0f7fa, #ffffff);
-              font-family: 'Poppins', sans-serif;
-              color: #0284c7;
-              text-align: center;
-            }
-            h2 { margin-top: 20px; font-size: 1.4rem; color: #0369a1; }
-            p { font-size: 0.95rem; color: #0ea5e9; }
-            .spinner {
-              width: 60px; height: 60px;
-              border: 6px solid #bae6fd;
-              border-top: 6px solid #0284c7;
-              border-radius: 50%;
-              animation: spin 1s linear infinite;
-            }
-            @keyframes spin { 0% {transform: rotate(0deg);} 100% {transform: rotate(360deg);} }
-          </style>
-        </head>
-        <body>
-          <div class="spinner"></div>
-          <h2>Menyiapkan Pembayaran Anda...</h2>
-          <p>Harap tunggu sebentar, halaman Midtrans sedang dimuat.</p>
-        </body>
-      </html>
-    `);
-    paymentWindow.document.close();
-
-    // ✅ 5. Pastikan Snap sudah siap
+    // Tunggu Snap siap
     const waitForSnap = () =>
       new Promise((resolve, reject) => {
         let tries = 0;
@@ -141,7 +89,7 @@ const OrderForm = () => {
 
     await waitForSnap();
 
-    // ✅ 6. Jalankan pembayaran Snap
+    // ✅ Gunakan modal Snap langsung (tanpa popup)
     window.snap.pay(data.token, {
       onSuccess: async (result) => {
         console.log("✅ Pembayaran sukses:", result);
@@ -155,23 +103,19 @@ const OrderForm = () => {
         };
 
         await emailjs.send(SERVICE_ID, TEMPLATE_ID, successPayload, PUBLIC_KEY);
-
-        if (paymentWindow) paymentWindow.close();
         navigate(`/success?order_id=${data.order_id}`);
       },
       onPending: (result) => {
         console.log("🕒 Pending:", result);
-        if (paymentWindow) paymentWindow.close();
         navigate(`/pending?order_id=${data.order_id}`);
       },
       onError: (err) => {
         console.error("❌ Error:", err);
         alert("Terjadi kesalahan saat memproses pembayaran.");
-        if (paymentWindow) paymentWindow.close();
       },
       onClose: () => {
         console.log("💡 Pembayaran ditutup oleh pengguna.");
-        if (paymentWindow) paymentWindow.close();
+        alert("Pembayaran ditutup sebelum selesai. Anda bisa mencoba lagi.");
       },
     });
   } catch (error) {
@@ -181,6 +125,7 @@ const OrderForm = () => {
     setLoading(false);
   }
 };
+
 
   return (
     <motion.section
