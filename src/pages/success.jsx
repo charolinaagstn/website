@@ -5,36 +5,35 @@ export default function Success() {
   const navigate = useNavigate();
   const location = useLocation();
   const [status, setStatus] = useState("checking");
+  const [rawStatus, setRawStatus] = useState(null);
 
   useEffect(() => {
     const query = new URLSearchParams(location.search);
     const orderId = query.get("order_id");
 
     if (orderId) {
-      fetch("/api/check-status", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ order_id: orderId }),
-      })
+      fetch(`/api/check-status?order_id=${orderId}`)
         .then((res) => res.json())
         .then((data) => {
+          console.log("🔍 Response Midtrans:", data);
+          setRawStatus(data.transaction_status);
+
           if (["capture", "settlement"].includes(data.transaction_status)) {
             setStatus("success");
           } else if (data.transaction_status === "pending") {
             setStatus("pending");
-          } else {
+          } else if (["deny", "cancel", "expire", "failure"].includes(data.transaction_status)) {
             setStatus("failed");
+          } else {
+            setStatus("error");
           }
         })
-        .catch(() => setStatus("error"));
+        .catch((err) => {
+          console.error("❌ Fetch Error:", err);
+          setStatus("error");
+        });
     }
-
-    const timer = setTimeout(() => {
-      navigate("/");
-    }, 5000);
-
-    return () => clearTimeout(timer);
-  }, [navigate, location.search]);
+  }, [location.search]);
 
   const renderStatus = () => {
     switch (status) {
@@ -60,20 +59,26 @@ export default function Success() {
           {icon}
         </div>
         <h1 className={`text-2xl font-bold mb-2 ${color}`}>{title}</h1>
-        <p className="text-gray-600 mb-6">
+        <p className="text-gray-600 mb-3">
           {status === "success"
             ? "Terima kasih! Pembayaran kamu sudah kami terima."
-            : "Tunggu sebentar, kami sedang memverifikasi transaksi kamu..."}
+            : status === "pending"
+            ? "Tunggu sebentar, pembayaranmu sedang diverifikasi."
+            : "Kami tidak dapat memverifikasi transaksi kamu."}
         </p>
+
+        {rawStatus && (
+          <p className="text-xs text-gray-500 mb-4">
+            Status asli dari Midtrans: <b>{rawStatus}</b>
+          </p>
+        )}
+
         <button
           onClick={() => navigate("/")}
           className="px-6 py-2 rounded-lg bg-green-500 text-white hover:bg-green-600 transition"
         >
           Kembali ke Beranda
         </button>
-        <p className="text-sm text-gray-500 mt-3">
-          Kamu akan diarahkan otomatis dalam 5 detik...
-        </p>
       </div>
     </div>
   );
