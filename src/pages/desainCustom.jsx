@@ -66,12 +66,32 @@ const DesainCustom = () => {
   const canvasContainerRef = useRef(null);
 
   // Preset colors
-  const colorPresets = [
-    "#000000", "#FFFFFF", "#FF0000", "#00FF00", "#0000FF", "#FFFF00",
-    "#FF00FF", "#00FFFF", "#FFA500", "#800080", "#FFC0CB", "#FFD700",
-    "#C0C0C0", "#808080", "#8B4513", "#2F4F4F", "#FF6347", "#4169E1",
-    "#32CD32", "#FF1493", "#00CED1", "#FF8C00", "#9370DB", "#20B2AA"
-  ];
+const colorPresets = [
+  "#F8BBD0", // Soft Pink
+  "#FADADD", // Light Rose
+  "#FCE4EC", // Blush
+  "#FFF9C4", // Light Yellow
+  "#E1F5FE", // Baby Blue
+  "#E0F7FA", // Mint Blue
+  "#E8F5E9", // Soft Green
+  "#FFF3E0", // Peach
+  "#F3E5F5", // Lavender
+  "#D1C4E9", // Lilac
+  "#FFECB3", // Cream
+  "#FFCCBC", // Soft Coral
+  "#C8E6C9", // Pastel Green
+  "#B3E5FC", // Sky Blue
+  "#B2EBF2", // Aqua
+  "#F0F4C3", // Pale Lime
+  "#DCEDC8", // Light Olive
+  "#FFE0B2", // Light Orange
+  "#F5F5F5", // Soft Gray
+  "#E0E0E0", // Cool Gray
+  "#D7CCC8", // Warm Beige
+  "#FBE9E7", // Blush Peach
+  "#E6EE9C", // Soft Lime
+  "#C5CAE9"  // Misty Blue
+];
 
   // Background gradients
   const bgGradients = [
@@ -185,53 +205,66 @@ const DesainCustom = () => {
   }, [bgColor, canvasSize]);
 
   // Apply Template
-  const applyTemplate = (template) => {
-    if (!canvas) return;
-    canvas.clear();
-    canvas.setBackgroundColor(template.bg, canvas.renderAll.bind(canvas));
-    
-    // Add title
-    const title = new fabric.IText(template.elements[1], {
-      fontSize: 60,
-      fontFamily: "Georgia",
-      fill: "#333333",
-      top: canvas.height / 2 - 50,
-      fontWeight: "bold",
-      id: `title-${Date.now()}`,
-      name: 'Judul'
-    });
-    canvas.add(title);
-    canvas.centerObjectH(title);
+ const applyTemplate = (template) => {
+  if (!canvas) return;
+  canvas.clear();
 
-    // Add decorative emojis
-    const emoji1 = new fabric.IText(template.elements[0], {
-      fontSize: 80,
-      top: 100,
-      left: 50,
-      id: `emoji1-${Date.now()}`,
-      name: 'Dekorasi 1'
-    });
-    canvas.add(emoji1);
+  // Set background color
+  canvas.setBackgroundColor(template.bg, canvas.renderAll.bind(canvas));
 
-    const emoji2 = new fabric.IText(template.elements[2], {
-      fontSize: 80,
-      top: 100,
-      left: canvas.width - 130,
-      id: `emoji2-${Date.now()}`,
-      name: 'Dekorasi 2'
-    });
-    canvas.add(emoji2);
+  // Dapatkan ukuran canvas saat ini
+  const cw = canvas.getWidth();
+  const ch = canvas.getHeight();
 
-    setShowTemplates(false);
-    setIsMobileMenuOpen(false);
-  };
+  // Skala dinamis berdasarkan ukuran canvas (agar proporsional di HP)
+  const scaleFactor = cw < 500 ? 0.5 : cw < 800 ? 0.7 : 1;
+
+  // Title
+  const title = new fabric.IText(template.elements[1], {
+    fontSize: 60 * scaleFactor,
+    fontFamily: "Georgia",
+    fill: "#333333",
+    top: ch / 2 - (80 * scaleFactor),
+    fontWeight: "bold",
+    id: `title-${Date.now()}`,
+    name: 'Judul',
+    originX: 'center',
+    left: cw / 2, // selalu di tengah horizontal
+  });
+  canvas.add(title);
+
+  // Emoji kiri atas
+  const emoji1 = new fabric.IText(template.elements[0], {
+    fontSize: 80 * scaleFactor,
+    top: 50 * scaleFactor,
+    left: 40 * scaleFactor,
+    id: `emoji1-${Date.now()}`,
+    name: 'Dekorasi 1',
+  });
+  canvas.add(emoji1);
+
+  // Emoji kanan atas
+  const emoji2 = new fabric.IText(template.elements[2], {
+    fontSize: 80 * scaleFactor,
+    top: 50 * scaleFactor,
+    left: cw - (120 * scaleFactor),
+    id: `emoji2-${Date.now()}`,
+    name: 'Dekorasi 2',
+  });
+  canvas.add(emoji2);
+
+  // Render ulang dan tutup panel template
+  canvas.renderAll();
+  setShowTemplates(false);
+  setIsMobileMenuOpen(false);
+};
 
   // Tambah Teks
   const addText = useCallback(() => {
     if (!canvas) return;
     const text = new fabric.IText("Teks Undangan", {
       fill: activeColor,
-      fontSize: fontSize,
+      fontSize: 23,
       fontFamily: fontFamily,
       top: 100,
       left: 100,
@@ -250,7 +283,7 @@ const DesainCustom = () => {
     if (!canvas) return;
     const text = new fabric.IText("Judul Undangan", {
       fill: activeColor,
-      fontSize: 72,
+      fontSize: 42,
       fontFamily: "Georgia",
       fontWeight: "bold",
       top: 100,
@@ -303,74 +336,78 @@ const DesainCustom = () => {
   }, [canvas]);
 
   // Tambah Bentuk
-  const addShape = useCallback((shapeType = 'rectangle') => {
-    if (!canvas) return;
-    let shape;
-    
-    switch(shapeType) {
-      case 'circle':
-        shape = new fabric.Circle({
-          radius: 75,
-          fill: activeColor,
-          opacity: opacity,
-          stroke: strokeColor,
-          strokeWidth: strokeWidth,
-          id: `circle-${Date.now()}`,
-          name: 'Lingkaran'
-        });
-        break;
-      case 'triangle':
-        shape = new fabric.Triangle({
-          width: 150,
-          height: 150,
-          fill: activeColor,
-          opacity: opacity,
-          stroke: strokeColor,
-          strokeWidth: strokeWidth,
-          id: `triangle-${Date.now()}`,
-          name: 'Segitiga'
-        });
-        break;
-      case 'line':
-        shape = new fabric.Line([50, 50, 200, 50], {
-          stroke: activeColor,
-          strokeWidth: 5,
-          opacity: opacity,
-          id: `line-${Date.now()}`,
-          name: 'Garis'
-        });
-        break;
-      case 'heart':
-        const heartPath = "M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z";
-        shape = new fabric.Path(heartPath, {
-          fill: activeColor,
-          opacity: opacity,
-          stroke: strokeColor,
-          strokeWidth: strokeWidth,
-          scaleX: 5,
-          scaleY: 5,
-          id: `heart-${Date.now()}`,
-          name: 'Hati'
-        });
-        break;
-      default:
-        shape = new fabric.Rect({
-          width: 300,
-          height: 150,
-          fill: activeColor,
-          opacity: opacity,
-          stroke: strokeColor,
-          strokeWidth: strokeWidth,
-          id: `rect-${Date.now()}`,
-          name: 'Kotak'
-        });
-    }
-    
-    canvas.add(shape);
-    canvas.setActiveObject(shape);
-    canvas.centerObject(shape);
-    setIsMobileMenuOpen(false);
-  }, [canvas, activeColor, opacity, strokeColor, strokeWidth]);
+const addShape = useCallback((shapeType = 'rectangle') => {
+  if (!canvas) return;
+  let shape;
+  const safeColor = activeColor || "#F48FB1"; // warna fallback
+
+  switch(shapeType) {
+    case 'circle':
+      shape = new fabric.Circle({
+        radius: 75,
+        fill: "#42A5F5",
+        opacity: opacity || 1,
+        stroke: strokeColor || safeColor,
+        strokeWidth: strokeWidth || 2,
+        id: `circle-${Date.now()}`,
+        name: 'Lingkaran'
+      });
+      break;
+    case 'triangle':
+      shape = new fabric.Triangle({
+        width: 150,
+        height: 150,
+        fill: "#5C6BC0",
+        opacity: opacity || 1,
+        stroke: strokeColor || safeColor,
+        strokeWidth: strokeWidth || 2,
+        id: `triangle-${Date.now()}`,
+        name: 'Segitiga'
+      });
+      break;
+    case 'line':
+      shape = new fabric.Line([50, 50, 200, 50], {
+        stroke: safeColor,
+        strokeWidth: 5,
+        opacity: opacity || 1,
+        id: `line-${Date.now()}`,
+        name: 'Garis'
+      });
+      break;
+    case 'heart':
+      const heartPath = "M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z";
+      shape = new fabric.Path(heartPath, {
+        fill: "#F48FB1",
+        opacity: opacity || 1,
+        stroke: strokeColor || safeColor,
+        strokeWidth: strokeWidth || 2,
+        scaleX: 5,
+        scaleY: 5,
+        id: `heart-${Date.now()}`,
+        name: 'Hati'
+      });
+      break;
+    default:
+      shape = new fabric.Rect({
+        width: 300,
+        height: 150,
+        fill: "#AB47BC",
+        opacity: opacity || 1,
+        stroke: strokeColor || safeColor,
+        strokeWidth: strokeWidth || 2,
+        id: `rect-${Date.now()}`,
+        name: 'Kotak'
+      });
+  }
+
+  canvas.add(shape);
+  shape.setCoords();
+  canvas.centerObject(shape);
+  canvas.setActiveObject(shape);
+  canvas.renderAll();
+  setIsMobileMenuOpen(false);
+}, [canvas, activeColor, opacity, strokeColor, strokeWidth]);
+
 
   // Upload Gambar
   const addImage = useCallback((e) => {
@@ -1152,12 +1189,7 @@ const DesainCustom = () => {
           >
             Square<br/>600×600
           </button>
-          <button
-            onClick={() => changeCanvasSize({ width: 1080, height: 1080 })}
-            className="bg-gray-200 hover:bg-gray-300 p-2 rounded-lg text-xs"
-          >
-            Instagram<br/>1080×1080
-          </button>
+        
         </div>
       </div>
 
