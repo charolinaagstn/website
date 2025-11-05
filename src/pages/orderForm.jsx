@@ -72,8 +72,56 @@ const OrderForm = () => {
       if (!data.token) throw new Error("Gagal mendapatkan token Midtrans.");
 
       // 🚪 Buka Midtrans Snap di jendela baru agar tidak hilang jika user kembali
-      const paymentWindow = window.open("", "_blank");
-      paymentWindow.document.write("<p>Sedang memuat pembayaran Midtrans...</p>");
+      const paymentWindow = window.open("", "_blank", "width=450,height=600,noopener,noreferrer");
+
+      // Tulis tampilan elegan dengan animasi loading
+      paymentWindow.document.write(`
+  <html>
+    <head>
+      <title>Pembayaran Sedang Diproses</title>
+      <style>
+        body {
+          margin: 0;
+          height: 100vh;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-direction: column;
+          background: linear-gradient(135deg, #e0f7fa, #ffffff);
+          font-family: 'Poppins', sans-serif;
+          color: #0284c7;
+          text-align: center;
+        }
+        h2 {
+          margin-top: 20px;
+          font-size: 1.4rem;
+          color: #0369a1;
+        }
+        p {
+          font-size: 0.95rem;
+          color: #0ea5e9;
+        }
+        .spinner {
+          width: 60px;
+          height: 60px;
+          border: 6px solid #bae6fd;
+          border-top: 6px solid #0284c7;
+          border-radius: 50%;
+          animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+      </style>
+    </head>
+    <body>
+      <div class="spinner"></div>
+      <h2>Menyiapkan Pembayaran Anda...</h2>
+      <p>Harap tunggu sebentar, halaman Midtrans sedang dimuat.</p>
+    </body>
+  </html>
+`);
 
       window.snap.pay(data.token, {
         onSuccess: async (result) => {
@@ -141,8 +189,8 @@ const OrderForm = () => {
               field === "name"
                 ? "Nama Lengkap"
                 : field === "email"
-                ? "Alamat Email"
-                : "Nomor WhatsApp"
+                  ? "Alamat Email"
+                  : "Nomor WhatsApp"
             }
             className="w-full p-3 border border-sky-200 rounded-xl focus:ring-2 focus:ring-sky-400 focus:outline-none transition"
             value={formData[field]}
@@ -179,10 +227,9 @@ const OrderForm = () => {
           whileTap={{ scale: 0.97 }}
           disabled={loading}
           className={`w-full py-4 text-white text-lg font-bold rounded-2xl shadow-lg flex items-center justify-center gap-2 transition 
-            ${
-              loading
-                ? "bg-gray-400 cursor-not-allowed"
-                : "bg-gradient-to-r from-sky-600 to-cyan-400 hover:brightness-110"
+            ${loading
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-gradient-to-r from-sky-600 to-cyan-400 hover:brightness-110"
             }`}
         >
           {loading ? <Loader2 className="animate-spin" /> : <CreditCard size={22} />}
