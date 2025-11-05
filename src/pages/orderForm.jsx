@@ -71,29 +71,40 @@ const OrderForm = () => {
       const data = await res.json();
       if (!data.token) throw new Error("Gagal mendapatkan token Midtrans.");
 
+      // 🚪 Buka Midtrans Snap di jendela baru agar tidak hilang jika user kembali
+      const paymentWindow = window.open("", "_blank");
+      paymentWindow.document.write("<p>Sedang memuat pembayaran Midtrans...</p>");
+
       window.snap.pay(data.token, {
         onSuccess: async (result) => {
           console.log("✅ Pembayaran sukses:", result);
 
-          // 📧 Kirim email "Pembayaran Selesai"
           const successPayload = {
             ...emailPayload,
             status: "Pembayaran Selesai ✅",
             transaction_id: result.transaction_id,
             order_id: result.order_id,
-            payment_type: result.payment_type, // Tidak perlu QRIS di email sukses
+            payment_type: result.payment_type,
           };
 
           await emailjs.send(SERVICE_ID, TEMPLATE_ID, successPayload, PUBLIC_KEY);
-          navigate("/success");
+
+          if (paymentWindow) paymentWindow.close();
+          navigate(`/success?order_id=${data.order_id}`);
         },
         onPending: (result) => {
           console.log("🕒 Pending:", result);
-          navigate("/pending");
+          if (paymentWindow) paymentWindow.close();
+          navigate(`/pending?order_id=${data.order_id}`);
         },
         onError: (err) => {
           console.error("❌ Error:", err);
           alert("Terjadi kesalahan saat memproses pembayaran.");
+          if (paymentWindow) paymentWindow.close();
+        },
+        onClose: () => {
+          console.log("💡 Pembayaran ditutup oleh pengguna.");
+          if (paymentWindow) paymentWindow.close();
         },
       });
     } catch (error) {

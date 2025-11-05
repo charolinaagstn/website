@@ -8,6 +8,7 @@ import OrderForm from "./pages/orderForm";
 import Success from "./pages/success";
 import Layout from "./layout/Layout";
 import DesainCustom from "./pages/desainCustom";
+import Pending from "./pages/pending";
 
 
 const App = () => {
@@ -20,6 +21,7 @@ const App = () => {
         <Route path="/contact" element={<Contact />} />
         <Route path="/order" element={<OrderForm />} />
         <Route path="/success" element={<Success />} />
+        <Route path="/pending" element={<Pending />} />
          <Route path="/desain-custom" element={<DesainCustom />} />
       </Route>
     </Routes>
