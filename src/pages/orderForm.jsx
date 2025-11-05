@@ -36,132 +36,151 @@ const OrderForm = () => {
   };
 
   const handlePayment = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+  e.preventDefault();
+  setLoading(true);
 
-    const cleanHarga = parseInt(formData.harga.replace(/\D/g, "")) || 50000;
+  const cleanHarga = parseInt(formData.harga.replace(/\D/g, "")) || 50000;
 
-    const emailPayload = {
-      name: formData.name,
-      email: formData.email,
-      whatsapp: formData.phone,
-      tema: formData.tema,
-      harga: `Rp ${cleanHarga.toLocaleString("id-ID")}`,
-      catatan: formData.pesan || "Tidak ada catatan",
-      time: new Date().toLocaleString("id-ID"),
-      status: "Menunggu Pembayaran",
-    };
-
-    try {
-      // 📩 Kirim email "Menunggu Pembayaran"
-      await emailjs.send(SERVICE_ID, TEMPLATE_ID, emailPayload, PUBLIC_KEY);
-      console.log("✅ Email status pending dikirim");
-
-      // 💳 Buat transaksi Midtrans
-      const res = await fetch("/api/create-transaction", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          amount: cleanHarga,
-          name: formData.name,
-          email: formData.email,
-        }),
-      });
-
-      const data = await res.json();
-      if (!data.token) throw new Error("Gagal mendapatkan token Midtrans.");
-
-      // 🚪 Buka Midtrans Snap di jendela baru agar tidak hilang jika user kembali
-      const paymentWindow = window.open("", "_blank", "width=450,height=600,noopener,noreferrer");
-
-      // Tulis tampilan elegan dengan animasi loading
-      paymentWindow.document.write(`
-  <html>
-    <head>
-      <title>Pembayaran Sedang Diproses</title>
-      <style>
-        body {
-          margin: 0;
-          height: 100vh;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-direction: column;
-          background: linear-gradient(135deg, #e0f7fa, #ffffff);
-          font-family: 'Poppins', sans-serif;
-          color: #0284c7;
-          text-align: center;
-        }
-        h2 {
-          margin-top: 20px;
-          font-size: 1.4rem;
-          color: #0369a1;
-        }
-        p {
-          font-size: 0.95rem;
-          color: #0ea5e9;
-        }
-        .spinner {
-          width: 60px;
-          height: 60px;
-          border: 6px solid #bae6fd;
-          border-top: 6px solid #0284c7;
-          border-radius: 50%;
-          animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
-        }
-      </style>
-    </head>
-    <body>
-      <div class="spinner"></div>
-      <h2>Menyiapkan Pembayaran Anda...</h2>
-      <p>Harap tunggu sebentar, halaman Midtrans sedang dimuat.</p>
-    </body>
-  </html>
-`);
-
-      window.snap.pay(data.token, {
-        onSuccess: async (result) => {
-          console.log("✅ Pembayaran sukses:", result);
-
-          const successPayload = {
-            ...emailPayload,
-            status: "Pembayaran Selesai ✅",
-            transaction_id: result.transaction_id,
-            order_id: result.order_id,
-            payment_type: result.payment_type,
-          };
-
-          await emailjs.send(SERVICE_ID, TEMPLATE_ID, successPayload, PUBLIC_KEY);
-
-          if (paymentWindow) paymentWindow.close();
-          navigate(`/success?order_id=${data.order_id}`);
-        },
-        onPending: (result) => {
-          console.log("🕒 Pending:", result);
-          if (paymentWindow) paymentWindow.close();
-          navigate(`/pending?order_id=${data.order_id}`);
-        },
-        onError: (err) => {
-          console.error("❌ Error:", err);
-          alert("Terjadi kesalahan saat memproses pembayaran.");
-          if (paymentWindow) paymentWindow.close();
-        },
-        onClose: () => {
-          console.log("💡 Pembayaran ditutup oleh pengguna.");
-          if (paymentWindow) paymentWindow.close();
-        },
-      });
-    } catch (error) {
-      console.error("❌ Error:", error);
-      alert("Gagal memproses pembayaran. Periksa koneksi atau data Anda.");
-    } finally {
-      setLoading(false);
-    }
+  const emailPayload = {
+    name: formData.name,
+    email: formData.email,
+    whatsapp: formData.phone,
+    tema: formData.tema,
+    harga: `Rp ${cleanHarga.toLocaleString("id-ID")}`,
+    catatan: formData.pesan || "Tidak ada catatan",
+    time: new Date().toLocaleString("id-ID"),
+    status: "Menunggu Pembayaran",
   };
+
+  try {
+    // ✅ 1. Kirim email pending
+    await emailjs.send(SERVICE_ID, TEMPLATE_ID, emailPayload, PUBLIC_KEY);
+    console.log("✅ Email status pending dikirim");
+
+    // ✅ 2. Buat transaksi Midtrans
+    const res = await fetch("/api/create-transaction", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        amount: cleanHarga,
+        name: formData.name,
+        email: formData.email,
+      }),
+    });
+
+    const data = await res.json();
+    if (!data.token) throw new Error("Gagal mendapatkan token Midtrans.");
+
+    // ✅ 3. Coba buka popup pembayaran
+    let paymentWindow = null;
+    if (typeof window !== "undefined") {
+      paymentWindow = window.open("", "_blank", "width=450,height=600,noopener,noreferrer");
+    }
+
+    if (!paymentWindow || paymentWindow.closed || typeof paymentWindow.closed === "undefined") {
+      alert("Popup pembayaran diblokir oleh browser. Mohon izinkan popup dan coba lagi.");
+      setLoading(false);
+      return;
+    }
+
+    // ✅ 4. Tulis halaman loading dengan aman
+    paymentWindow.document.open();
+    paymentWindow.document.write(`
+      <html>
+        <head>
+          <title>Pembayaran Sedang Diproses</title>
+          <style>
+            body {
+              margin: 0;
+              height: 100vh;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              flex-direction: column;
+              background: linear-gradient(135deg, #e0f7fa, #ffffff);
+              font-family: 'Poppins', sans-serif;
+              color: #0284c7;
+              text-align: center;
+            }
+            h2 { margin-top: 20px; font-size: 1.4rem; color: #0369a1; }
+            p { font-size: 0.95rem; color: #0ea5e9; }
+            .spinner {
+              width: 60px; height: 60px;
+              border: 6px solid #bae6fd;
+              border-top: 6px solid #0284c7;
+              border-radius: 50%;
+              animation: spin 1s linear infinite;
+            }
+            @keyframes spin { 0% {transform: rotate(0deg);} 100% {transform: rotate(360deg);} }
+          </style>
+        </head>
+        <body>
+          <div class="spinner"></div>
+          <h2>Menyiapkan Pembayaran Anda...</h2>
+          <p>Harap tunggu sebentar, halaman Midtrans sedang dimuat.</p>
+        </body>
+      </html>
+    `);
+    paymentWindow.document.close();
+
+    // ✅ 5. Pastikan Snap sudah siap
+    const waitForSnap = () =>
+      new Promise((resolve, reject) => {
+        let tries = 0;
+        const interval = setInterval(() => {
+          if (window.snap) {
+            clearInterval(interval);
+            resolve();
+          }
+          if (tries++ > 10) {
+            clearInterval(interval);
+            reject(new Error("Midtrans Snap gagal dimuat."));
+          }
+        }, 300);
+      });
+
+    await waitForSnap();
+
+    // ✅ 6. Jalankan pembayaran Snap
+    window.snap.pay(data.token, {
+      onSuccess: async (result) => {
+        console.log("✅ Pembayaran sukses:", result);
+
+        const successPayload = {
+          ...emailPayload,
+          status: "Pembayaran Selesai ✅",
+          transaction_id: result.transaction_id,
+          order_id: result.order_id,
+          payment_type: result.payment_type,
+        };
+
+        await emailjs.send(SERVICE_ID, TEMPLATE_ID, successPayload, PUBLIC_KEY);
+
+        if (paymentWindow) paymentWindow.close();
+        navigate(`/success?order_id=${data.order_id}`);
+      },
+      onPending: (result) => {
+        console.log("🕒 Pending:", result);
+        if (paymentWindow) paymentWindow.close();
+        navigate(`/pending?order_id=${data.order_id}`);
+      },
+      onError: (err) => {
+        console.error("❌ Error:", err);
+        alert("Terjadi kesalahan saat memproses pembayaran.");
+        if (paymentWindow) paymentWindow.close();
+      },
+      onClose: () => {
+        console.log("💡 Pembayaran ditutup oleh pengguna.");
+        if (paymentWindow) paymentWindow.close();
+      },
+    });
+  } catch (error) {
+    console.error("❌ Error:", error);
+    alert("Gagal memproses pembayaran. Periksa koneksi atau data Anda.");
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <motion.section
