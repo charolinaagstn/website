@@ -1,12 +1,16 @@
 import midtransClient from "midtrans-client";
 
 export default async function handler(req, res) {
-  if (req.method !== "POST") {
+  if (req.method !== "GET") {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
   try {
-    const { order_id } = req.body;
+    const { order_id } = req.query;
+
+    if (!order_id) {
+      return res.status(400).json({ error: "Missing order_id" });
+    }
 
     const core = new midtransClient.CoreApi({
       isProduction: false,
@@ -15,6 +19,7 @@ export default async function handler(req, res) {
     });
 
     const statusResponse = await core.transaction.status(order_id);
+
     res.status(200).json(statusResponse);
   } catch (error) {
     console.error("Check Status Error:", error);
